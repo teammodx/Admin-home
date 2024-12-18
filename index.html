@@ -1,69 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Panel</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f5f5f5;
-    }
-    .header, .footer {
-      background-color: #4CAF50;
-      color: white;
-      text-align: center;
-      padding: 10px;
-    }
-    .container {
-      padding: 20px;
-    }
-    .card {
-      background: white;
-      margin: 10px;
-      padding: 15px;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-    .btn {
-      display: inline-block;
-      padding: 10px 15px;
-      background: #4CAF50;
-      color: white;
-      border: none;
-      text-decoration: none;
-      border-radius: 3px;
-    }
-    .btn:hover {
-      background: #45a049;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coin System</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            transition: background 1s;
+        }
+
+        .coin-info, .result, .buy-section {
+            margin: 20px auto;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-  <div class="header">
-    <h1>User Panel</h1>
-  </div>
-
-  <div class="container">
-    <div class="card">
-      <h2>Welcome, [Username]</h2>
-      <p>Current Coin Balance: <b>100</b></p>
-      <a href="#purchase" class="btn">Purchase Coins</a>
+    <h1>Coin System</h1>
+    <div class="coin-info">
+        <h3>Your Coins: <span id="user-coins">100</span></h3>
     </div>
 
-    <div class="card">
-      <h3>Transaction History</h3>
-      <ul>
-        <li>+50 Coins (Purchased) - 2024-12-01</li>
-        <li>-20 Coins (Redeemed) - 2024-12-10</li>
-      </ul>
+    <div class="result">
+        <button onclick="playGame()">Play (Deduct 10 Coins)</button>
+        <p id="game-result">Click to play and get a random result!</p>
     </div>
-  </div>
 
-  <div class="footer">
-    <p>&copy; 2024 Coin System</p>
-  </div>
+    <div class="buy-section">
+        <h3>Buy Coins</h3>
+        <p>100 Coins = ₹500</p>
+        <a href="upi://pay?pa=sharadkombe-1@okicici&pn=Sharad Kombe&mc=&tid=&tr=&tn=Add Coins&am=500&cu=INR">
+            <button>Pay ₹500</button>
+        </a>
+    </div>
+
+    <script>
+        let coins = 100;
+
+        // Change background color every minute
+        function changeBackground() {
+            const colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"];
+            let index = 0;
+            setInterval(() => {
+                document.body.style.backgroundColor = colors[index];
+                index = (index + 1) % colors.length;
+            }, 60000);
+        }
+        changeBackground();
+
+        // Play game and deduct coins
+        function playGame() {
+            if (coins >= 10) {
+                coins -= 10;
+                document.getElementById("user-coins").innerText = coins;
+                const result = Math.random() > 0.5 ? "BIG" : "SMALL";
+                document.getElementById("game-result").innerText = `Result: ${result}`;
+            } else {
+                alert("Not enough coins! Please buy more.");
+            }
+        }
+    </script>
 </body>
 </html>
