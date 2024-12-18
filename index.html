@@ -3,68 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coin System</title>
+    <title>Admin Panel</title>
     <style>
         body {
             text-align: center;
             font-family: Arial, sans-serif;
-            transition: background 1s;
+            background-color: #f4f4f9;
         }
 
-        .coin-info, .result, .buy-section {
+        .container {
             margin: 20px auto;
         }
 
-        button {
-            padding: 10px 20px;
+        input, button {
+            padding: 10px;
+            margin: 5px;
             font-size: 16px;
-            margin-top: 10px;
+        }
+
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
             cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        #status-message {
+            color: green;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <h1>Coin System</h1>
-    <div class="coin-info">
-        <h3>Your Coins: <span id="user-coins">100</span></h3>
-    </div>
-
-    <div class="result">
-        <button onclick="playGame()">Play (Deduct 10 Coins)</button>
-        <p id="game-result">Click to play and get a random result!</p>
-    </div>
-
-    <div class="buy-section">
-        <h3>Buy Coins</h3>
-        <p>100 Coins = ₹500</p>
-        <a href="upi://pay?pa=sharadkombe-1@okicici&pn=Sharad Kombe&mc=&tid=&tr=&tn=Add Coins&am=500&cu=INR">
-            <button>Pay ₹500</button>
-        </a>
+    <h1>Admin Panel</h1>
+    <div class="container">
+        <h3>Add Coins to User</h3>
+        <input type="text" id="username" placeholder="Enter Username" />
+        <input type="number" id="coins" placeholder="Enter Coins to Add" />
+        <button onclick="addCoins()">Add Coins</button>
+        <p id="status-message"></p>
     </div>
 
     <script>
-        let coins = 100;
+        // Add coins to user (simulated for localStorage)
+        function addCoins() {
+            const username = document.getElementById("username").value.trim();
+            const coinsToAdd = parseInt(document.getElementById("coins").value, 10);
+            if (username && coinsToAdd > 0) {
+                const userCoins = localStorage.getItem(username) || 0;
+                const updatedCoins = parseInt(userCoins, 10) + coinsToAdd;
+                localStorage.setItem(username, updatedCoins);
 
-        // Change background color every minute
-        function changeBackground() {
-            const colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"];
-            let index = 0;
-            setInterval(() => {
-                document.body.style.backgroundColor = colors[index];
-                index = (index + 1) % colors.length;
-            }, 60000);
-        }
-        changeBackground();
-
-        // Play game and deduct coins
-        function playGame() {
-            if (coins >= 10) {
-                coins -= 10;
-                document.getElementById("user-coins").innerText = coins;
-                const result = Math.random() > 0.5 ? "BIG" : "SMALL";
-                document.getElementById("game-result").innerText = `Result: ${result}`;
+                document.getElementById("status-message").innerText = `${coinsToAdd} coins added to ${username}. Total: ${updatedCoins}`;
             } else {
-                alert("Not enough coins! Please buy more.");
+                document.getElementById("status-message").innerText = "Invalid input. Please try again.";
             }
         }
     </script>
